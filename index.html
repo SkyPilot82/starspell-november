@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>STARSPELL — The November Road</title>
+<style>
+  :root{--ink:#e8e4f4;--dim:#a89fc4;--gold:#ffd77a;--gold-hot:#fff2c9;--bg:#0d1026;--card:#171a38;--card2:#1e2246;--line:#2e3260;--good:#7ce08a;--bad:#e07c7c;--warn:#ffb066;
+    --l-design:#c9a5ff;--l-build:#ffd77a;--l-art:#ff9ec4;--l-store:#7fd3ff;--l-video:#ffb066;--l-test:#7ce08a;--l-hold:#8a94c4}
+  *{box-sizing:border-box}
+  body{margin:0;background:linear-gradient(180deg,#0d1026 0%,#1a1737 55%,#2b2050 100%);background-attachment:fixed;color:var(--ink);font:16px/1.55 Georgia,"Palatino Linotype",serif;padding-bottom:130px}
+  .wrap{max-width:1100px;margin:0 auto;padding:28px 16px}
+  h1{font-size:34px;margin:8px 0 2px;color:var(--gold-hot);letter-spacing:1px}
+  h1 .star{color:var(--gold)}
+  h2{font-size:22px;color:var(--gold);margin:44px 0 6px;border-bottom:1px solid var(--line);padding-bottom:6px}
+  .sub{color:var(--dim);margin:0 0 18px}
+  .prov{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:14.5px;color:var(--dim)}
+  .prov b{color:var(--ink)}
+  .lawbar{background:#241a3d;border:1px solid #4a3a6a;border-radius:10px;padding:10px 16px;margin:14px 0;color:#e0c9f0;font-size:14.5px}
+  .note{font-size:14px;color:var(--dim)}
+  a{color:var(--gold)}
+  table{border-collapse:collapse;width:100%;font-size:14.5px;margin:10px 0}
+  th,td{border-bottom:1px solid var(--line);padding:7px 8px;text-align:left;vertical-align:top}
+  th{color:var(--gold);font-weight:normal;letter-spacing:.06em;font-size:13px}
+  .ctl{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:14px 0;font-size:14px;color:var(--dim)}
+  .ctl input[type=date]{background:#101330;color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:4px 6px;font:14px Helvetica,sans-serif}
+  .ctl button,.bar button{background:var(--card2);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:7px 12px;font:13px Helvetica,sans-serif;cursor:pointer}
+  .lanes{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 18px}
+  .lp{font:12.5px Helvetica,sans-serif;border-radius:999px;padding:3px 10px;border:1px solid var(--line);color:var(--dim)}
+  .lp b{color:var(--ink)}
+  .lp.l-design{border-color:var(--l-design)}.lp.l-build{border-color:var(--l-build)}.lp.l-art{border-color:var(--l-art)}.lp.l-store{border-color:var(--l-store)}.lp.l-video{border-color:var(--l-video)}.lp.l-test{border-color:var(--l-test)}.lp.l-hold{border-color:var(--l-hold)}
+  /* days */
+  .day{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin:10px 0}
+  .day.wk{background:#131631;opacity:.92}
+  .day.today{border-color:var(--good);box-shadow:0 0 0 1px var(--good) inset}
+  .day.rel{border-color:var(--gold);box-shadow:0 0 18px rgba(255,215,122,.25)}
+  .day.alt{border-color:#8a94c4}
+  .day header{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+  .dn{font-size:16px;color:var(--gold-hot)}
+  .dn b{color:var(--gold)}
+  .tag{font:11px Helvetica,sans-serif;letter-spacing:.1em;border:1px solid var(--good);color:var(--good);border-radius:999px;padding:1px 8px;vertical-align:middle}
+  .tag.gold{border-color:var(--gold);color:var(--gold)}.tag.dim{border-color:#8a94c4;color:#8a94c4}
+  .mark{font-size:13px;color:var(--warn);font-style:italic;flex:1}
+  .add{margin-left:auto;background:transparent;border:1px dashed var(--line);color:var(--dim);border-radius:8px;padding:3px 9px;font:12px Helvetica,sans-serif;cursor:pointer}
+  .empty{color:#5e5a7e;font-size:13px;font-style:italic;padding:2px 4px}
+  .task{border-left:4px solid var(--line);background:#101330;border-radius:8px;padding:8px 10px;margin:6px 0}
+  .task.l-design{border-left-color:var(--l-design)}.task.l-build{border-left-color:var(--l-build)}.task.l-art{border-left-color:var(--l-art)}.task.l-store{border-left-color:var(--l-store)}.task.l-video{border-left-color:var(--l-video)}.task.l-test{border-left-color:var(--l-test)}.task.l-hold{border-left-color:var(--l-hold)}
+  .task.s-done{opacity:.55}.task.s-done .ttl{text-decoration:line-through}
+  .task.s-cut{opacity:.4}.task.s-cut .ttl{text-decoration:line-through}
+  .task.s-doing .chk{border-color:var(--warn);color:var(--warn)}
+  .trow{display:flex;gap:10px;align-items:flex-start}
+  .chk{flex:0 0 24px;height:24px;border-radius:6px;border:1px solid var(--line);background:#0b0e22;color:var(--good);font:bold 14px Helvetica,sans-serif;cursor:pointer;padding:0}
+  .ttl{flex:1;outline:none;font-size:15.5px;color:var(--ink);min-height:22px}
+  .ttl:focus,.tnote:focus{background:#161a40;border-radius:4px}
+  .sz{font:12px Helvetica,sans-serif;color:var(--dim);border:1px solid var(--line);border-radius:4px;padding:1px 6px}
+  .tnote{font-size:13.5px;color:var(--dim);margin:4px 0 0 34px;outline:none;min-height:16px}
+  .tnote:empty:before{content:attr(data-ph);color:#4e4a6e;font-style:italic}
+  .tctl{display:none;gap:6px;flex-wrap:wrap;align-items:center;margin:8px 0 0 34px}
+  .task:focus-within .tctl,.task:hover .tctl{display:flex}
+  .tctl select,.tctl input{background:#0b0e22;color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:3px 5px;font:12px Helvetica,sans-serif}
+  .tctl button{background:#0b0e22;color:var(--dim);border:1px solid var(--line);border-radius:6px;padding:3px 8px;font:12px Helvetica,sans-serif;cursor:pointer}
+  .tctl .del{color:var(--bad)}
+  .lnk{font:12px Helvetica,sans-serif}
+  .bar{position:fixed;left:0;right:0;bottom:0;background:#0b0e22ee;border-top:1px solid var(--line);padding:10px 16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;backdrop-filter:blur(6px)}
+  .bar .st{color:var(--dim);font-size:13.5px;flex:1;min-width:200px}
+  .bar .st b{color:var(--gold-hot)}
+  .bar #copy{background:var(--gold);color:#201500;border:0;font-weight:bold}
+  .ok{color:var(--good)}
+  .leg{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;color:var(--dim);margin:6px 0}
+  .leg span:before{content:"";display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px;background:var(--c)}
+  @media (max-width:640px){.tctl{display:flex}.ttl{font-size:15px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1><span class="star">✦</span> STARSPELL — The November Road</h1>
+<p class="sub">A day-by-day plan from today to a first-week-of-November release, with the second week held as the fallback. Every line on it is editable right here: retitle it, move it, cut it, add your own. Edits save in this browser; <b>COPY PLAN</b> at the bottom gives you the text to paste back to me and I bake it into the page.</p>
+
+<div class="prov"><b>Skylar (Skylar's console), 2026-10-16, verbatim:</b> "We want Starspell to have more going on in the game. Take a look at GvT for example, it has a lot of content in the game. We also want to build a time frame for a November release that's realistic, maybe the first week of November or the second week of November. We need a time frame on what still needs to be done for Starspell, and hopefully we can fill it into that time frame. Can you build 2 pages on Skypilot github. One showing how we can make Starspell more expansive and another with a time frame release. The time frame should include design pages we haven't added yet or ideas that we want to put in the game or haven't tweaked yet. Break it down on a day-by-day basis of what needs to get done so we can aim for that release, including creating videos and maybe a playable for the game. I should be able to edit the timeline on the page as well, so I can tweak it based on what needs to get done."<br><br>Sister page: <a href="https://skypilot82.github.io/starspell-expansion/">MORE GOING ON</a> — the expansion ideas this road makes room for (the ones marked ★ 1.0 are already placed on the days below).</div>
+
+<h2>How the road is laid</h2>
+<p>The game stands at <b>v0.121.0</b> live, the <b>first5</b> tutorial at v0.15.0 in its sandbox, TestFlight build 1.0 (1) up since 8/18 with the listing, age rating and ten screenshots already entered in App Store Connect. What stands between here and the store is not one big thing but a stack of small ones, plus the two that only Wyatt's Mac can do (archive build 2, press Submit).</p>
+<div class="lawbar"><b>The shape:</b> two weeks of content (Oct 17–30) · <b>content freeze Fri Oct 30</b> · build 2 + privacy labels + pricing on Wyatt's Mac Oct 31 · TestFlight soak over the weekend · <b>Submit Mon Nov 2</b> · Apple's review usually lands in 24–48 h · <b>release aim Thu Nov 5</b> · fallback <b>Thu Nov 12</b> if the review bounces once. The second week is kept deliberately empty of new content so a rejection has somewhere to land.</div>
+<table>
+<tr><th>Assumption</th><th>What it means for the days below</th></tr>
+<tr><td>Who builds</td><td>Cards fire on this console's local jumpr across the ten Fable accounts. A realistic day is two or three build cards (one M, two S) plus your verdict time; the fleet's quota is the ceiling, not the calendar.</td></tr>
+<tr><td>Your part</td><td>Verdicts come in batches on the weekends (chips on the design pages) and phone tests on the shipped builds. Nothing on a build day is waiting on a decision not already placed before it.</td></tr>
+<tr><td>Web updates after freeze</td><td>The shell loads drbango.com/beta3, so fixes keep flowing to the app after submission. The freeze is about what the reviewer sees, not the last word on content.</td></tr>
+<tr><td>Wyatt's Mac</td><td>Only three items need it: build 2 (the new icon), privacy labels + pricing in ASC, and Submit. They are marked <span class="lp l-store">store / shell</span>. Everything else runs from here.</td></tr>
+<tr><td>Sizes</td><td><b>S</b> = half a session, <b>M</b> = one session, <b>L</b> = two or more. A day holds about two M's worth.</td></tr>
+</table>
+
+<h2>The road</h2>
+<div class="ctl">
+  release aim <input type="date" id="relIn"> · fallback <input type="date" id="altIn">
+  <button id="shift" title="slide every unfinished task by N days">shift the unfinished…</button>
+  <span class="note">tap a title or note to edit · hover a task for lane / size / status / date · ✓ cycles todo → doing → done</span>
+</div>
+<div class="lanes" id="lanecount"></div>
+<div class="leg"><span style="--c:var(--l-design)">design verdict (yours)</span><span style="--c:var(--l-build)">build card</span><span style="--c:var(--l-art)">art / MJ</span><span style="--c:var(--l-store)">store / shell</span><span style="--c:var(--l-video)">video / playable</span><span style="--c:var(--l-test)">play-test</span><span style="--c:var(--l-hold)">buffer</span></div>
+<div id="days"></div>
+
+<h2>After the release (not on the road, so it stays honest)</h2>
+<p class="note">These are the pieces the plan deliberately leaves for 1.0.1 and beyond, each a card or a round on its own: the <b>store</b> (Patron, themes, tip jar — needs the StoreKit bridge and a new shell build, so it is its own TestFlight cycle), <b>push notifications</b> (same reason), the full <b>Living Sky</b> waves beyond wave one, the <b>Where You Stand</b> ranking + honours redesign, the <b>Rising Ladder</b> epic tier, <b>seasons</b> (zodiac-month or quarterly), the <b>Second Night</b> campaign and the 40 unauthored constellations as new beasts. The expansion page has each one with a chip.</p>
+</div>
+
+<div class="bar"><span class="st" id="st"></span><button id="copy">COPY PLAN</button><button id="json" title="copy the raw JSON (for a backup or to move browsers)">copy JSON</button><button id="imp">import JSON</button><button id="reset">reset to the seed plan</button></div>
+
+<script>
+const PLAN = {
+  start: '2026-10-16',
+  release: '2026-11-05',
+  altRelease: '2026-11-12',
+  marks: {
+    '2026-10-16': 'today — the two pages land',
+    '2026-10-30': 'CONTENT FREEZE for what the reviewer sees',
+    '2026-10-31': "Wyatt's Mac day",
+    '2026-11-02': 'SUBMIT FOR REVIEW',
+    '2026-11-05': 'first-week aim',
+    '2026-11-12': 'second-week fallback'
+  },
+  tasks: [
+    // ---- Thu Oct 16
+    {id:'t1',date:'2026-10-16',lane:'design',size:'S',status:'done',ord:1,title:'The two pages: MORE GOING ON + THE NOVEMBER ROAD',note:'This page and its sister. Read both, then start chipping.',link:'https://skypilot82.github.io/starspell-expansion/'},
+    {id:'t2',date:'2026-10-16',lane:'design',size:'S',status:'todo',ord:2,title:'Rule the home buttons + the wordmark flare (10/15 round)',note:'Six button sets + the flare film. Pick THE ONE and a flare verdict so tomorrow\'s card can fire.',link:'https://skypilot82.github.io/starspell-home-buttons/'},
+    {id:'t3',date:'2026-10-16',lane:'test',size:'S',status:'todo',ord:3,title:'Phone-test first5 v0.15.0 (the whole scripted night)',note:'drbango.com/beta3/first5 — refresh restarts it. Note anything to reword or re-time; that becomes tomorrow\'s fix card.',link:'https://drbango.com/beta3/first5/'},
+    // ---- Fri Oct 17
+    {id:'t4',date:'2026-10-17',lane:'build',size:'M',status:'todo',ord:1,title:'Ship the home buttons + the flare (merge home-flare, cut the winner, dark NEW GAME variant)',note:'Branch home-flare already built in the worktree; the winner needs its real hand mask + 9-slice geometry (627×344). BUILD bump + 12 index stamps, sky/gate suites.'},
+    {id:'t5',date:'2026-10-17',lane:'build',size:'S',status:'todo',ord:2,title:'first5 fix round 2 from your phone notes',note:'Whatever Thursday\'s test turned up: wording, beat lengths, the once-a-night rule. Skip if the night played clean.'},
+    {id:'t6',date:'2026-10-17',lane:'design',size:'S',status:'todo',ord:3,title:'Pick the 1.0 cut on MORE GOING ON (★ chips)',note:'The expansion page recommends a cut that fits by Oct 30. Confirm it or swap items; the next two weeks are built from that list.',link:'https://skypilot82.github.io/starspell-expansion/'},
+    // ---- Sat Oct 18 / Sun Oct 19 — verdict weekend
+    {id:'t7',date:'2026-10-18',lane:'design',size:'M',status:'todo',ord:1,title:'Verdict weekend ①: sky redesign (26 constellations + 5 Qs)',note:'The 9/3 page. The build on Tue–Wed only moves the signs you chip; unchipped stay as they are.',link:'https://skypilot82.github.io/starspell-sky-redesign/'},
+    {id:'t8',date:'2026-10-18',lane:'design',size:'S',status:'todo',ord:2,title:'Verdict weekend ①: new sigils — pick 6 to 10 of the 30',note:'Sigil-ideas page (8/31). The first batch ships Fri Oct 24; the rest wait for 1.0.1.',link:'https://skypilot82.github.io/starspell-sigil-ideas/'},
+    {id:'t9',date:'2026-10-19',lane:'design',size:'S',status:'todo',ord:1,title:'Verdict weekend ②: Living Sky wave one — chip 8 signs + the 6 Qs',note:'Only wave one (T1 gestures) fits before freeze. Chip the eight constellations you most want tappable.',link:'https://skypilot82.github.io/starspell-living-sky/'},
+    {id:'t10',date:'2026-10-19',lane:'design',size:'S',status:'todo',ord:2,title:'Verdict weekend ②: the small ones — Taurus blend dial, open-sky BEGIN A/B/C, Sagittarius reroll, epic frame + monuments',note:'Four pages, four quick calls. Each is an S card; they fill the gaps on build days.',link:'https://skypilot82.github.io/starspell-taurus-blend/'},
+    // ---- Mon Oct 20
+    {id:'t11',date:'2026-10-20',lane:'build',size:'L',status:'todo',ord:1,title:'first5 → LIVE, card 1: graft the scripted first night into beta3 (English)',note:'The sandbox\'s 5 scripted lessons move behind the live FTUE gate. The SANDBOX-ONLY refresh-wipe law must NOT cross over. Harness: first5-check seams re-homed into ftue-check.'},
+    {id:'t12',date:'2026-10-20',lane:'art',size:'S',status:'todo',ord:2,title:'Native review of the es/fr/pt/de first-night words (rig/floor letters)',note:'The four non-English boards are drafts. One pass with the integration validator + a native read; fixes ride card 2.'},
+    // ---- Tue Oct 21
+    {id:'t13',date:'2026-10-21',lane:'build',size:'M',status:'todo',ord:1,title:'first5 → LIVE, card 2: five tongues + the once-ever rule + ship',note:'Integration re-rules once-a-night vs once-ever (the sandbox restarts; the live game must not). ftue 73 + lang 34 + sign suites, 5-tongue title check, live-verify on published bytes.'},
+    {id:'t14',date:'2026-10-21',lane:'build',size:'M',status:'todo',ord:2,title:'Sky redesign card 1: the chipped constellation reshapes (data)',note:'From campaign-sky-redesign-2026-09-data.json, only the signs you chipped. Before/after shots in the card.'},
+    // ---- Wed Oct 22
+    {id:'t15',date:'2026-10-22',lane:'build',size:'M',status:'todo',ord:1,title:'Sky redesign card 2: act bands (Parting Veil) + act-boss aura + header turnover',note:'The dress half of the 9/3 design. Skip any Q you ruled "later".'},
+    {id:'t16',date:'2026-10-22',lane:'build',size:'S',status:'todo',ord:2,title:'Tomorrow Teased + Defeat Margin (retention ③ + ⑤)',note:'End screen names tomorrow\'s sky; a loss says "SERPENS survived on 3" with one tip and AVENGE THE NIGHT. Both are end-screen work, one card.',link:'https://skypilot82.github.io/starspell-retention/'},
+    // ---- Thu Oct 23
+    {id:'t17',date:'2026-10-23',lane:'build',size:'M',status:'todo',ord:1,title:'Living Sky wave one: 8 tappable constellations (T1 gestures)',note:'The living-sky-play page already has the gestures playable in a browser; this moves them into the chart under the 7 build laws.'},
+    {id:'t18',date:'2026-10-23',lane:'build',size:'M',status:'todo',ord:2,title:'THE BESTIARY: a book of the beasts you have felled (retention ⑥)',note:'Profile door. Felled beasts lit, kill counts, one lore line each, dark cards for the unmet. Reuses the sleeping-gallery silhouettes pattern.'},
+    // ---- Fri Oct 24
+    {id:'t19',date:'2026-10-24',lane:'build',size:'M',status:'todo',ord:1,title:'New sigils batch 1 (the 6–10 you picked) + inspector text ×5 tongues',note:'Data + art slots + odds re-checked (Battle.sigilChances). Update the sigils reference page in the same card so it does not drift.'},
+    {id:'t20',date:'2026-10-24',lane:'build',size:'S',status:'todo',ord:2,title:'The small four: Taurus blend · BEGIN button · Sagittarius swap · epic frame',note:'Whichever of the weekend\'s small calls were a yes. Each is a constant or an art swap.'},
+    // ---- Sat Oct 25 / Sun Oct 26 — play-test weekend
+    {id:'t21',date:'2026-10-25',lane:'test',size:'M',status:'todo',ord:1,title:'Play-test weekend: you + Wyatt + two friends on the live build, every mode once',note:'Campaign to a boss, a daily, five endless levels, a worldwide duel, a friend duel, the new first night from a fresh install. Write the bug list as you go.'},
+    {id:'t22',date:'2026-10-26',lane:'design',size:'S',status:'todo',ord:1,title:'Sort the bug list: must-fix before freeze vs after',note:'Anything the reviewer could hit is must-fix. Dials and polish go to the 1.0.1 pile.'},
+    {id:'t23',date:'2026-10-26',lane:'hold',size:'S',status:'todo',ord:2,title:'Buffer — a slot for whatever slipped from the week',note:'If nothing slipped, pull the Zodiac Wheel forward.'},
+    // ---- Mon Oct 27
+    {id:'t24',date:'2026-10-27',lane:'build',size:'M',status:'todo',ord:1,title:'Fix card: the must-fix list from the weekend',note:'One card, every must-fix, suites green ×3, live-verified.'},
+    {id:'t25',date:'2026-10-27',lane:'build',size:'S',status:'todo',ord:2,title:'The Zodiac Wheel on the profile (retention ⑦) + the empty sign-reward slots filled',note:'The per-sign clears are already tracked and never shown. Fill the sign-level reward slots (L5/L15/L20/L30/L50) with titles + vessels so the ladder is not hollow at launch.'},
+    {id:'t26',date:'2026-10-27',lane:'build',size:'S',status:'todo',ord:3,title:'WHAT\'S NEW sheet + the Hollow Sky (Halloween) banner on the home meadow',note:'A one-screen "tonight in STARSPELL" door. Ships the Oct 31–Nov 1 event sky if you chipped it on the expansion page; otherwise just the sheet.'},
+    // ---- Tue Oct 28
+    {id:'t27',date:'2026-10-28',lane:'art',size:'M',status:'todo',ord:1,title:'Re-shoot the 10 App Store screenshots off the current build (painted night, wordmark, new buttons, first night)',note:'The ASC set is from v0.93.1 — pre painted-night. Shoot from a clean archive of the freeze candidate with tools/shots-rig.mjs + steps.mjs (1320×2868, slot order). Replace in ASC one at a time.'},
+    {id:'t28',date:'2026-10-28',lane:'video',size:'M',status:'todo',ord:2,title:'Build the film rig: CDP screencast at device pixels (flare-film.mjs lineage) + ffmpeg cut',note:'One script that records any scripted scene at DPR 3, 60 fps, with the game\'s own audio mixed in afterward. Reused for every video below.'},
+    // ---- Wed Oct 29
+    {id:'t29',date:'2026-10-29',lane:'video',size:'M',status:'todo',ord:1,title:'App Preview video (15–30 s, portrait, no narration): the rise, a cast, a beast falls, the daily board, a duel',note:'Apple\'s rules: captured footage only, no hands/devices, 886×1920 for 6.9". Upload to ASC with the shots on Nov 2.'},
+    {id:'t30',date:'2026-10-29',lane:'video',size:'M',status:'todo',ord:2,title:'The trailer (45–60 s) for socials + the landing page',note:'Same footage, cut longer with the wordmark flare as the title card and the painted night as the opener. 9:16 and 16:9 exports.'},
+    {id:'t31',date:'2026-10-29',lane:'video',size:'S',status:'todo',ord:3,title:'The PLAYABLE: a landing page with "play in your browser" + trailer + App Store badge + TestFlight link',note:'The web game IS the playable — a page at drbango.com/starspell (or beta3) that opens the first night straight away is the demo. Store link 404s until approval; that is expected.'},
+    // ---- Thu Oct 30 — FREEZE
+    {id:'t32',date:'2026-10-30',lane:'build',size:'M',status:'todo',ord:1,title:'FREEZE CARD: BUILD bump, VS_APP_URL → the App Store link, SS_SHARE_URL, all suites ×3, 5-tongue pass, push',note:'versus.js still ships the TestFlight invite link; a store build must never share one. privacy.html / support.html / beta3 all 200. This is the version the reviewer sees.'},
+    {id:'t33',date:'2026-10-30',lane:'store',size:'S',status:'todo',ord:2,title:'Store copy refresh: description + promo re-read against the frozen build; store-kit chips closed',note:'The description still lists things true at v0.93; add the first night, the seven skies, the level gate. Keep the 9/21 no-ads ruling (no "no ads" claims). Re-cut keywords if the subtitle changes.'},
+    // ---- Fri Oct 31 — Wyatt's Mac
+    {id:'t34',date:'2026-10-31',lane:'store',size:'M',status:'todo',ord:1,title:"Wyatt's Mac: build 2 (CFBundleVersion 2, the Golden S icon) → archive_upload.sh → TestFlight",note:'STORE-RUN-ME.md Phase 1. The .p8 key and Xcode live only there. Build 1 is byte-identical but carries the old icon.'},
+    {id:'t35',date:'2026-10-31',lane:'store',size:'S',status:'todo',ord:2,title:"Wyatt's Mac: privacy labels (PRIVACY-LABELS.md, 4 linked types) + pricing FREE + Small Business Program + attach build 2 to 1.0",note:'All in the ASC web UI; the spec is in the shell repo\'s store/ folder.'},
+    {id:'t36',date:'2026-10-31',lane:'build',size:'S',status:'todo',ord:3,title:'The Hollow Sky goes live tonight (if chipped): the Halloween event sky, two nights only',note:'A seasonal plate + one borrowed-beast rule on the daily. Proof the event-sky plumbing before launch week with a stake that is small.'},
+    // ---- Sat Nov 1 / Sun Nov 2
+    {id:'t37',date:'2026-11-01',lane:'test',size:'M',status:'todo',ord:1,title:'TestFlight soak on build 2: fresh install, first night, every door, a duel, a share, kill-and-relaunch',note:'You, Wyatt (the outlier phone), and the external group. Only web-side hotfixes from here; the shell is sealed.'},
+    {id:'t38',date:'2026-11-01',lane:'hold',size:'S',status:'todo',ord:2,title:'Buffer — hotfix slot',note:'Web deploys only.'},
+    {id:'t39',date:'2026-11-02',lane:'store',size:'M',status:'todo',ord:1,title:'SUBMIT: upload the App Preview + the new screenshots, final listing read, manual release, Submit for Review',note:'STORE-RUN-ME Phases 3–5 on Wyatt\'s Mac. Manual release so the date is ours, not the reviewer\'s clock. Review notes: no account, nothing to buy, how to reach a duel fast.'},
+    {id:'t40',date:'2026-11-02',lane:'video',size:'S',status:'todo',ord:2,title:'Launch kit: the trailer uploaded unlisted, three 9:16 clips cut, the share text + the landing page link ready',note:'Everything staged so launch day is one button.'},
+    // ---- Tue Nov 3 / Wed Nov 4 — in review
+    {id:'t41',date:'2026-11-03',lane:'hold',size:'S',status:'todo',ord:1,title:'In review. Watch ASC; answer any reviewer message the same hour',note:'The 4.2 minimum-functionality risk for web-shell apps: the reply is the native pieces (identity heal, share sheet, haptics, the painted boot) and the review notes already say it.'},
+    {id:'t42',date:'2026-11-03',lane:'build',size:'S',status:'todo',ord:2,title:'Day-one watch rig: a board of exceptions, duel outcomes, bot share, daily participation',note:'Read-only RTDB queries into one page so launch day has numbers, not vibes.'},
+    {id:'t43',date:'2026-11-04',lane:'hold',size:'S',status:'todo',ord:1,title:'If approved early: hold at Pending Developer Release until the 5th',note:'If rejected: fix, resubmit the same day — the fallback week absorbs it.'},
+    // ---- Thu Nov 5 — RELEASE
+    {id:'t44',date:'2026-11-05',lane:'store',size:'S',status:'todo',ord:1,title:'RELEASE: press Release This Version, verify the store page, flip the landing page to the live badge',note:'Then the trailer goes public and the share text goes out.'},
+    {id:'t45',date:'2026-11-05',lane:'test',size:'S',status:'todo',ord:2,title:'Launch-day watch: exceptions, first-night completion, duels found, the daily board filling',note:'Hotfix web-side the same day if anything reads red.'},
+    // ---- Fri Nov 6
+    {id:'t46',date:'2026-11-06',lane:'build',size:'S',status:'todo',ord:1,title:'Day-two hotfix card (if needed) + the 1.0.1 list opened',note:'Collect the launch-week notes into the next road.'},
+    // ---- fallback week
+    {id:'t47',date:'2026-11-09',lane:'store',size:'S',status:'todo',ord:1,title:'FALLBACK ONLY: resubmit after a rejection fix',note:'Only exists if the 5th slipped. Otherwise cut it.'},
+    {id:'t48',date:'2026-11-10',lane:'design',size:'M',status:'todo',ord:1,title:'Open the 1.0.1 road: store (Patron + themes), push notifications, Living Sky waves 2–4, Where You Stand, seasons',note:'A design-first week. Each of these is on the expansion page with a chip.'},
+    {id:'t49',date:'2026-11-12',lane:'store',size:'S',status:'todo',ord:1,title:'FALLBACK RELEASE DAY (second week of November)',note:'If the 5th held, this day is the 1.0.1 planning cutoff instead.'}
+  ]
+};
+</script>
+<script src="editor.js"></script>
+</body>
+</html>
